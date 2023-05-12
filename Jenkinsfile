@@ -41,7 +41,7 @@ pipeline {
         stage('Desplegar en OpenShift') {
             steps {
               sh '''
-		    oc login --token=Y1KUsDAJgnc_OmVsyMuS4W3PehLZOgtN51uJgElWPSU --server=https://ec2-100-26-153-236.compute-1.amazonaws.com:8443 --insecure-skip-tls-verify
+		    oc login --token=Y1KUsDAJgnc_OmVsyMuS4W3PehLZOgtN51uJgElWPSU --server=https://ec2-100-25-13-67.compute-1.amazonaws.com:8443 --insecure-skip-tls-verify
 		    oc new-app ciokma/springboot-cdojo:latest --name springboot-cdojo
 		    oc expose svc springboot-cdojo --name=springboot-cdojo
                   '''

@@ -43,7 +43,7 @@ pipeline {
               sh '''
 		    oc login --token=kMpcdg7ThlPQo5tkaC-9gDEXI7F_AO-6l8BLiWt7wXQ --server=https://ec2-54-224-88-191.compute-1.amazonaws.com:8443 --insecure-skip-tls-verify
 		    oc new-app ciokma/springboot-cdojo:latest --name springboot-ms
-		    oc expose svc springboot-cdojo --name=springboot-cdojo
+		    oc expose svc/springboot-ms --name=springboot-ms
                   '''
              }
         }

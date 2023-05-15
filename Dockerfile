@@ -7,7 +7,7 @@ RUN mvn install
 # Inject the JAR file into a new container to keep the file small
 FROM openjdk:11-jre-slim
 WORKDIR /app
-COPY --from=build /app/target/java-spring-boot-ms-*.jar /app/app.jar
+COPY --from=build /app/target/spring-app-*.jar /app/app.jar
 EXPOSE 8080
 ENTRYPOINT ["sh", "-c"]
 CMD ["java -jar app.jar"]

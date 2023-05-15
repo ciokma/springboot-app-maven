@@ -8,6 +8,7 @@ pipeline {
     agent any
     environment {
 		DOCKERHUB_CREDENTIALS=credentials('dockerhub-cred')
+	    	NEXUSDOCKER_CREDENTIALS=credentials('nexusdocker-cred')
 	}
     stages {
     
@@ -24,24 +25,42 @@ pipeline {
               
             }
         }
-        stage('Upload to Nexus') {
+        stage('Upload Artifact to Nexus') {
 	  steps {
-	    nexusArtifactUploader artifacts: [[artifactId: '01-spring-app', classifier: '', file: 'target/spring-app-0.0.1-SNAPSHOT.jar', type: 'jar']], credentialsId: 'nexus-credentials', groupId: 'spring-app', nexusUrl: '54.147.37.68:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'spring-ms-app', version: "${currentBuild.number}-INITIAL"
+   		   nexusArtifactUploader artifacts: [[artifactId: '01-spring-app',
+					       classifier: '',
+					       file: 'target/spring-app-0.0.1-SNAPSHOT.jar',
+					       type: 'jar']],
+		    credentialsId: 'nexus-credentials',
+		    groupId: 'spring-app',
+		    nexusUrl: '54.147.37.68:8081',
+		    nexusVersion: 'nexus3',
+		    protocol: 'http',
+		    repository: 'spring-ms-app',
+		    version: "${currentBuild.number}-INITIAL"		  
 	  }
        }
-       stage('Login dockerhub') {
+        stage('Build and Push Docker Image to Nexus') {
+	  steps {
+		  sh 'sudo docker login -u $NEXUSDOCKER_CREDENTIALS_USR -p $NEXUSDOCKER_CREDENTIALS_PSW ec2-54-147-37-68.compute-1.amazonaws.com:8085'
+		  sh 'sudo docker build . -t ec2-54-147-37-68.compute-1.amazonaws.com:8085/springboot-cdojo:latest'
+		  sh 'sudo docker push ec2-54-147-37-68.compute-1.amazonaws.com:8085/springboot-cdojo:latest'
+		  
+	  }
+       }
+       stage('Login to dockerhub') {
 
-			steps {
-				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-			}
+		steps {
+			sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 		}
+	}
 
-		stage('Push to dockerhub') {
+	stage('Push to dockerhub') {
 
-			steps {
-				sh 'docker push ciokma/springboot-cdojo:latest'
-			}
+		steps {
+			sh 'docker push ciokma/springboot-cdojo:latest'
 		}
+	}
         
         stage('Desplegar en OpenShift') {
             steps {

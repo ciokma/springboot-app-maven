@@ -37,14 +37,14 @@ pipeline {
 		    nexusVersion: 'nexus3',
 		    protocol: 'http',
 		    repository: 'spring-ms-app',
-		    version: "${currentBuild.number}-INITIAL"		  
+		    version: "${currentBuild.number}"		  
 	  }
        }
         stage('Build and Push Docker Image to Nexus') {
 	  steps {
 		  sh 'docker login -u $NEXUSDOCKER_CREDENTIALS_USR -p $NEXUSDOCKER_CREDENTIALS_PSW ec2-54-147-37-68.compute-1.amazonaws.com:8085'
-		  sh 'docker build . -t ec2-54-147-37-68.compute-1.amazonaws.com:8085/springboot-cdojo:latest'
-		  sh 'docker push ec2-54-147-37-68.compute-1.amazonaws.com:8085/springboot-cdojo:latest'
+		  sh "docker build . -t ec2-54-147-37-68.compute-1.amazonaws.com:8085/springboot:${currentBuild.number}"
+		  sh "docker push ec2-54-147-37-68.compute-1.amazonaws.com:8085/springboot:${currentBuild.number}"
 		  
 	  }
        }
@@ -66,7 +66,9 @@ pipeline {
             steps {
               sh '''
 		    oc login --token=kMpcdg7ThlPQo5tkaC-9gDEXI7F_AO-6l8BLiWt7wXQ --server=https://ec2-54-224-88-191.compute-1.amazonaws.com:8443 --insecure-skip-tls-verify
-		    oc new-app ciokma/springboot-cdojo:latest --name springboot-ms
+		    oc delete all -l app=springboot-ms
+		    # oc new-app ciokma/springboot-cdojo:latest --name springboot-ms
+		    oc new-app ec2-54-147-37-68.compute-1.amazonaws.com:8085/springboot:${currentBuild.number} --name springboot-ms
 		    oc expose svc/springboot-ms --name=springboot-ms
                   '''
              }

@@ -26,7 +26,7 @@ pipeline {
         }
         stage('Upload to Nexus') {
 	  steps {
-	    nexusArtifactUploader artifacts: [[artifactId: '01-spring-app', classifier: '', file: 'target/spring-app-0.0.1-SNAPSHOT.jar', type: 'jar']], credentialsId: 'nexus-credentials', groupId: 'spring-app', nexusUrl: '54.147.37.68:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'spring-ms-app', version: '${currentBuild.number}-INITIAL'
+	    nexusArtifactUploader artifacts: [[artifactId: '01-spring-app', classifier: '', file: 'target/spring-app-0.0.1-SNAPSHOT.jar', type: 'jar']], credentialsId: 'nexus-credentials', groupId: 'spring-app', nexusUrl: '54.147.37.68:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'spring-ms-app', version: "${currentBuild.number}-INITIAL"
 	  }
        }
        stage('Login dockerhub') {

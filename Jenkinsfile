@@ -42,9 +42,9 @@ pipeline {
        }
         stage('Build and Push Docker Image to Nexus') {
 	  steps {
-		  sh 'sudo docker login -u $NEXUSDOCKER_CREDENTIALS_USR -p $NEXUSDOCKER_CREDENTIALS_PSW ec2-54-147-37-68.compute-1.amazonaws.com:8085'
-		  sh 'sudo docker build . -t ec2-54-147-37-68.compute-1.amazonaws.com:8085/springboot-cdojo:latest'
-		  sh 'sudo docker push ec2-54-147-37-68.compute-1.amazonaws.com:8085/springboot-cdojo:latest'
+		  sh 'docker login -u $NEXUSDOCKER_CREDENTIALS_USR -p $NEXUSDOCKER_CREDENTIALS_PSW ec2-54-147-37-68.compute-1.amazonaws.com:8085'
+		  sh 'docker build . -t ec2-54-147-37-68.compute-1.amazonaws.com:8085/springboot-cdojo:latest'
+		  sh 'docker push ec2-54-147-37-68.compute-1.amazonaws.com:8085/springboot-cdojo:latest'
 		  
 	  }
        }

@@ -44,9 +44,7 @@ pipeline {
 	  steps {
 		  sh 'docker login -u $NEXUSDOCKER_CREDENTIALS_USR -p $NEXUSDOCKER_CREDENTIALS_PSW ec2-3-95-38-34.compute-1.amazonaws.com:8085'
 		  sh "docker build . -t ec2-3-95-38-34.compute-1.amazonaws.com:8085/springboot:${currentBuild.number}"
-		  sh "docker push ec2-3-95-38-34.compute-1.amazonaws.com:8085/springboot:${currentBuild.number}"
-		  
-		  sh 'docker logout ec2-3-95-38-34.compute-1.amazonaws.com:8085'
+		  sh "docker push ec2-3-95-38-34.compute-1.amazonaws.com:8085/springboot:${currentBuild.number}"		  
 		  
 	  }
        }

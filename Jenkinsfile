@@ -33,7 +33,7 @@ pipeline {
 					       type: 'jar']],
 		    credentialsId: 'nexus-credentials',
 		    groupId: 'spring-app',
-		    nexusUrl: '54.147.37.68:8081',
+		    nexusUrl: '3.95.38.34:8081',
 		    nexusVersion: 'nexus3',
 		    protocol: 'http',
 		    repository: 'spring-ms-app',
@@ -42,9 +42,9 @@ pipeline {
        }
         stage('Build and Push Docker Image to Nexus') {
 	  steps {
-		  sh 'docker login -u $NEXUSDOCKER_CREDENTIALS_USR -p $NEXUSDOCKER_CREDENTIALS_PSW ec2-54-209-208-49.compute-1.amazonaws.com:8085'
-		  sh "docker build . -t ec2-54-209-208-49.compute-1.amazonaws.com:8085/springboot:${currentBuild.number}"
-		  sh "docker push ec2-54-209-208-49.compute-1.amazonaws.com:8085/springboot:${currentBuild.number}"
+		  sh 'docker login -u $NEXUSDOCKER_CREDENTIALS_USR -p $NEXUSDOCKER_CREDENTIALS_PSW ec2-3-95-38-34.compute-1.amazonaws.com:8085'
+		  sh "docker build . -t ec2-3-95-38-34.compute-1.amazonaws.com:8085/springboot:${currentBuild.number}"
+		  sh "docker push ec2-3-95-38-34.compute-1.amazonaws.com:8085/springboot:${currentBuild.number}"
 		  
 	  }
        }

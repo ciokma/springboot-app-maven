@@ -45,6 +45,8 @@ pipeline {
 		  sh 'docker login -u $NEXUSDOCKER_CREDENTIALS_USR -p $NEXUSDOCKER_CREDENTIALS_PSW ec2-3-95-38-34.compute-1.amazonaws.com:8085'
 		  sh "docker build . -t ec2-3-95-38-34.compute-1.amazonaws.com:8085/springboot:${currentBuild.number}"
 		  sh "docker push ec2-3-95-38-34.compute-1.amazonaws.com:8085/springboot:${currentBuild.number}"
+		  sh "docker rmi $(docker images --filter=reference=ec2-3-95-38-34.compute-1.amazonaws.com:8085/springboot:${currentBuild.number} -q)"
+		  sh 'docker logout ec2-3-95-38-34.compute-1.amazonaws.com:8085'
 		  
 	  }
        }
@@ -68,9 +70,9 @@ pipeline {
 		    oc login --token=7lWUw-8UWiYxS539wD-h8d8UMSVjZ3z6CfKozEPlanE --server=https://ec2-54-160-64-190.compute-1.amazonaws.com:8443 --insecure-skip-tls-verify
 		    oc delete all -l app=springboot-ms
 		 
-		    oc new-app ciokma/springboot-cdojo:latest --name springboot-ms
+		    #oc new-app ciokma/springboot-cdojo:latest --name springboot-ms
 		  '''
-		   sh "#oc new-app ec2-54-209-208-49.compute-1.amazonaws.com:8085/springboot:${currentBuild.number} --name springboot-ms"
+		   sh "oc new-app ec2-3-95-38-34.compute-1.amazonaws.com:8085/springboot:${currentBuild.number} --name springboot-ms"
 		   sh 'oc expose svc/springboot-ms --name=springboot-ms'
                   
              }

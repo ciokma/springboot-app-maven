@@ -65,7 +65,7 @@ pipeline {
         stage('Desplegar en OpenShift') {
             steps {
               sh '''
-		    oc login --token=kMpcdg7ThlPQo5tkaC-9gDEXI7F_AO-6l8BLiWt7wXQ --server=https://ec2-54-224-88-191.compute-1.amazonaws.com:8443 --insecure-skip-tls-verify
+		    oc login --token=7lWUw-8UWiYxS539wD-h8d8UMSVjZ3z6CfKozEPlanE --server=https://ec2-54-160-64-190.compute-1.amazonaws.com:8443 --insecure-skip-tls-verify
 		    oc delete all -l app=springboot-ms
 		 
 		    oc new-app ciokma/springboot-cdojo:latest --name springboot-ms
